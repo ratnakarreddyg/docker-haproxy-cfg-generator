@@ -24,10 +24,11 @@ for container in containers:
   labels = inspect_output['Config']['Labels']
 
   proxy_container_port = labels.get("docker-proxy-container-port")
+  proxy_external_port  = labels.get("docker-proxy-external-port")
   proxy_host_port      = None
 
   # If the container has the docker-proxy-* labels, then get the host port
-  if proxy_container_port is not None:
+  if proxy_container_port is not None and proxy_external_port is not None:
     port_key = "%s/tcp" % proxy_container_port
     host_ports = inspect_output['NetworkSettings']['Ports'][port_key]
     for host_port in host_ports:
@@ -37,10 +38,10 @@ for container in containers:
 
   # If ports were found, add it to container_host_portmap
   if proxy_host_port is not None:
-    port_list = container_host_portmap.get(proxy_container_port)
+    port_list = container_host_portmap.get(proxy_external_port)
     if port_list is None:
       port_list = []
-      container_host_portmap[proxy_container_port] = port_list
+      container_host_portmap[proxy_external_port] = port_list
     container_name_hostport = dict()
     container_name_hostport['name']      = inspect_output['Name'].replace('/', '')
     container_name_hostport['host_port'] = proxy_host_port

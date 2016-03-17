@@ -29,13 +29,13 @@ defaults
     timeout check           10s
     maxconn                 3000
 
-{% for container_port in map.keys() %}
-frontend  docker_{{container_port}} *:{{container_port}}
-    default_backend             container_{{container_port}}
+{% for external_port in map.keys() %}
+frontend  docker_{{external_port}} *:{{external_port}}
+    default_backend             container_{{external_port}}
 
-backend container_{{container_port}}
+backend container_{{external_port}}
     balance     roundrobin
-    {% for hostport_map in map.get(container_port) %}
+    {% for hostport_map in map.get(external_port) %}
     server  {{hostport_map['name']}} 127.0.0.1:{{hostport_map['host_port']}} check
     {% endfor %}
 {% endfor %}
