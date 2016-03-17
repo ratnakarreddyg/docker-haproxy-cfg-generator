@@ -51,4 +51,5 @@ for container in containers:
 
 j2_env = Environment(loader=FileSystemLoader('/'), trim_blocks=True)
 template = j2_env.get_template(haproxy_template_path, None, None)
+
 print template.render(map=container_host_portmap)
