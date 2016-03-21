@@ -31,9 +31,9 @@ for container in containers:
   env_dict = dict()
   envs = inspect_output['Config']['Env']
   for env in envs:
-    env_dict[env.split('=')[0]] = env.split('='][1])
-  proxy_container_port = env_dict('docker-proxy-container-port')
-  proxy_external_port  = env_dict('docker-proxy-external-port')
+    env_dict[env.split('=')[0]] = env.split('=')[1]
+  proxy_container_port = env_dict.get('docker-proxy-container-port')
+  proxy_external_port  = env_dict.get('docker-proxy-external-port')
   
   proxy_host_port      = None
 
