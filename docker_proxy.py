@@ -21,10 +21,20 @@ containers = cli.containers()
 for container in containers:
   container_id = container['Id']
   inspect_output = cli.inspect_container( container_id )
-  labels = inspect_output['Config']['Labels']
-
-  proxy_container_port = labels.get("docker-proxy-container-port")
-  proxy_external_port  = labels.get("docker-proxy-external-port")
+  
+  # Can't use labels for now
+  #labels = inspect_output['Config']['Labels']
+  #proxy_container_port = labels.get("docker-proxy-container-port")
+  #proxy_external_port  = labels.get("docker-proxy-external-port")
+  
+  # Get values from Env if they exist
+  env_dict = dict()
+  envs = inspect_output['Config']['Env']
+  for env in envs:
+    env_dict[env.split('=')[0]] = env.split('='][1])
+  proxy_container_port = env_dict('docker-proxy-container-port')
+  proxy_external_port  = env_dict('docker-proxy-external-port')
+  
   proxy_host_port      = None
 
   # If the container has the docker-proxy-* labels, then get the host port
