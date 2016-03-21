@@ -22,11 +22,6 @@ for container in containers:
   container_id = container['Id']
   inspect_output = cli.inspect_container( container_id )
   
-  # Can't use labels for now
-  #labels = inspect_output['Config']['Labels']
-  #proxy_container_port = labels.get("docker-proxy-container-port")
-  #proxy_external_port  = labels.get("docker-proxy-external-port")
-  
   # Get values from Env if they exist
   env_dict = dict()
   envs = inspect_output['Config']['Env']
